@@ -6,7 +6,7 @@ const NavBar = () => {
     <AppBar position="fixed">
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
         <Link to="/">
-          <Typography>FAKE STORE</Typography>
+          <Typography color="white">FAKE STORE</Typography>
         </Link>
 
         <Box sx={{ display: "flex", gap: "0.5rem" }}>

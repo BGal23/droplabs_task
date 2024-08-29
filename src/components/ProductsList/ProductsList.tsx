@@ -1,20 +1,27 @@
 import { useEffect, useState } from "react";
-import { Box, List, ListItem } from "@mui/material";
+import { List, ListItem } from "@mui/material";
 import fetchAllProducts from "../../api/fetchAllProducts";
-import CircularProgress from "@mui/material/CircularProgress";
 import useStyles from "./ProductsList.styles";
-import { Link } from "react-router-dom";
-import { IProducts } from "../../types/api";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
+import { IProduct } from "../../types/api";
+import Loader from "../Loader/Loader";
 
 const ProductsList = () => {
   const [productsList, setProductsList] = useState([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [sorted, setsorted] = useState<string>("");
+  const [sorted, setSorted] = useState<string>("");
+  const [sortParam] = useSearchParams();
   const classes = useStyles();
+  const location = useLocation();
 
   useEffect(() => {
     getAllProducts();
   }, []);
+
+  useEffect(() => {
+    const sortValue = sortParam.get("sort") || "";
+    setSorted(sortValue);
+  }, [sortParam]);
 
   const getAllProducts = async () => {
     setIsLoading(true);
@@ -30,12 +37,12 @@ const ProductsList = () => {
 
   const sortProducts = () => {
     const sortedProducts = [...productsList].sort(
-      (a: IProducts, b: IProducts) => {
+      (a: IProduct, b: IProduct) => {
         switch (sorted) {
-          case "title_a-z":
+          case "a-z":
             return a.title.localeCompare(b.title);
 
-          case "title_z-a":
+          case "z-a":
             return b.title.localeCompare(a.title);
 
           case "price_up":
@@ -55,15 +62,14 @@ const ProductsList = () => {
   return (
     <>
       {isLoading ? (
-        <Box className={classes.loader}>
-          <CircularProgress />
-        </Box>
+        <Loader />
       ) : (
         <List>
-          {sortProducts().map((element: IProducts) => (
+          {sortProducts().map((element: IProduct) => (
             <ListItem key={element.id}>
               <Link
                 to={`/products/${element.id}`}
+                state={{ from: location }}
                 className={classes.productWrapper}
               >
                 <img src={element.image} width={100} />
