@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { List, ListItem } from "@mui/material";
+import { Box, List, ListItem } from "@mui/material";
 import fetchAllProducts from "../../api/fetchAllProducts";
 import useStyles from "./ProductsList.styles";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
@@ -72,11 +72,21 @@ const ProductsList = () => {
                 state={{ from: location }}
                 className={classes.productWrapper}
               >
-                <img src={element.image} width={100} />
+                <img
+                  className={classes.image}
+                  src={element.image}
+                  width={100}
+                />
+                <Box
+                  sx={{ flexDirection: { sm: "row", xs: "column" } }}
+                  className={classes.textWrapper}
+                >
+                  <div className={classes.title}>{element.title}</div>
 
-                <div className={classes.title}>{element.title}</div>
-
-                <div>{element.price.toFixed(2)}$</div>
+                  <div className={classes.price}>
+                    {element.price.toFixed(2)}$
+                  </div>
+                </Box>
               </Link>
             </ListItem>
           ))}
