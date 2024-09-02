@@ -5,10 +5,11 @@ import useStyles from "./ProductsList.styles";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { IProduct } from "../../types/api";
 import Loader from "../Loader/Loader";
+import deepClone from "lodash.clonedeep";
 
 const ProductsList = () => {
   const [productsList, setProductsList] = useState([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [sorted, setSorted] = useState<string>("");
   const [sortParam] = useSearchParams();
   const classes = useStyles();
@@ -36,7 +37,8 @@ const ProductsList = () => {
   };
 
   const sortProducts = () => {
-    const sortedProducts = [...productsList].sort(
+    const productListDeepCopy = deepClone(productsList);
+    const sortedProducts = productListDeepCopy.sort(
       (a: IProduct, b: IProduct) => {
         switch (sorted) {
           case "a-z":

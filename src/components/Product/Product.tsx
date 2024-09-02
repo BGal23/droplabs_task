@@ -13,10 +13,12 @@ const Product = () => {
   const classes = useStyles();
 
   useEffect(() => {
-    getProduct();
+    if (id) {
+      getProduct(id);
+    }
   }, [id]);
 
-  const getProduct = async () => {
+  const getProduct = async (id: string) => {
     setIsLoading(true);
     try {
       const selectedProduct = await fetchProduct(id);
@@ -64,7 +66,7 @@ const Product = () => {
                 Rate: <b>{product.rating.rate.toFixed(1)}/5.0</b>
               </div>
 
-              <div>({product.rating.count})</div>
+              <div>({product.rating.count} ratings)</div>
             </Box>
             <Box>
               <div>Description:</div>
