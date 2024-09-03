@@ -67,27 +67,21 @@ const ProductsList = () => {
         <Loader />
       ) : (
         <List>
-          {sortProducts().map((element: IProduct) => (
-            <ListItem key={element.id}>
+          {sortProducts().map(({ id, image, title, price }: IProduct) => (
+            <ListItem key={id}>
               <Link
-                to={`/products/${element.id}`}
+                to={`/products/${id}`}
                 state={{ from: location }}
                 className={classes.productWrapper}
               >
-                <img
-                  className={classes.image}
-                  src={element.image}
-                  width={100}
-                />
+                <img className={classes.image} src={image} width={100} />
                 <Box
                   sx={{ flexDirection: { sm: "row", xs: "column" } }}
                   className={classes.textWrapper}
                 >
-                  <div className={classes.title}>{element.title}</div>
+                  <div className={classes.title}>{title}</div>
 
-                  <div className={classes.price}>
-                    {element.price.toFixed(2)}$
-                  </div>
+                  <div className={classes.price}>{price.toFixed(2)}$</div>
                 </Box>
               </Link>
             </ListItem>
